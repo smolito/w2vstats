@@ -13,3 +13,7 @@ if (!dir.exists("data-output")){
 if (!dir.exists("data-interim")){
   dir.create("data-interim")
 }
+
+if (!dir.exists("plots")){
+  dir.create("plots")
+}

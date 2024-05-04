@@ -1,5 +1,6 @@
 library(tidyverse)
 library(purrr)
+library(writexl)
 
 source("directory_work.R")
 
@@ -67,4 +68,48 @@ shapiro.test(prumer_skupin_po_slovu$group1$prumer)
 shapiro.test(prumer_skupin_po_slovu$group2$prumer)
 shapiro.test(prumer_skupin_po_slovu$group3$prumer)
 
-# TODO: means across all the words by names
+map(prumer_skupin_po_slovu, function(df){
+  
+  nm = df |> select(group) |> distinct() |> unlist()
+  
+  write.csv(df, paste0("data-output/", "mean_cer_by_word_in_group_", nm, ".csv"))
+  write_xlsx(df, paste0("data-output/", "mean_cer_by_word_in_group_", nm, ".xlsx"))
+})
+
+# TODO: means across all the words by names ----
+
+prumer_skupin_po_jmenu = map(mergnute_zaznamy_na_slovo, function(skupina){
+  
+  uniquenms = skupina |> select(name) |> distinct() |> unlist()
+  
+  prumer_skupiny_po_jmenu = map(uniquenms, function(jmeno){
+    
+    grp = skupina |> select(group) |> distinct() |> unlist()
+    
+    # get df with all ppl in a group, by name
+    dfmean = skupina |>
+      filter(name == jmeno & group == grp)
+    
+    cer = dfmean |> select(cer) |> unlist()
+    
+    dfmean = dfmean |> select(-c(word, word_id, cer)) |>
+      mutate(prumer = mean(cer)) |>
+      distinct()
+    
+    return(dfmean)
+  }) |> bind_rows()
+  
+  return(prumer_skupiny_po_jmenu)
+}, .progress = TRUE)
+
+shapiro.test(prumer_skupin_po_jmenu$group1$prumer)
+shapiro.test(prumer_skupin_po_jmenu$group2$prumer)
+shapiro.test(prumer_skupin_po_jmenu$group3$prumer)
+
+map(prumer_skupin_po_jmenu, function(df){
+  
+  nm = df |> select(group) |> distinct() |> unlist()
+  
+  write.csv(df, paste0("data-output/", "mean_cer_across_names_", nm, ".csv"))
+  write_xlsx(df, paste0("data-output/", "mean_cer_across_names_", nm, ".xlsx"))
+})

@@ -46,7 +46,7 @@ h0 = df0 |> filter(file_code == filecode2analyze) |>
 
 figure = ggarrange(h0)
 figure
-ggsave(filename = paste0("data-output/hist_", cg2analyze0, "_", filecode2analyze, ".png"))
+ggsave(filename = paste0("plots/hist_", cg2analyze0, "_", filecode2analyze, ".png"))
 
 h00 = df00 |> filter(file_code == filecode2analyze) |>
   ggplot(mapping = aes(x = cer)) + 
@@ -56,7 +56,7 @@ h00 = df00 |> filter(file_code == filecode2analyze) |>
 
 figure = ggarrange(h00)
 figure
-ggsave(filename = paste0("data-output/hist_", cg2analyze00, "_", filecode2analyze, ".png"))
+ggsave(filename = paste0("plots/hist_", cg2analyze00, "_", filecode2analyze, ".png"))
 
 h1 = df1 |> filter(file_code == filecode2analyze) |>
   ggplot(mapping = aes(x = cer)) + 
@@ -66,7 +66,7 @@ h1 = df1 |> filter(file_code == filecode2analyze) |>
 
 figure = ggarrange(h1)
 figure
-ggsave(filename = paste0("data-output/hist_ppd", "_", filecode2analyze, ".png"))
+ggsave(filename = paste0("plots/hist_ppd", "_", filecode2analyze, ".png"))
 
 # visual normality => q-q plots ----
 h0 = df0 |> filter(file_code == filecode2analyze) |>
@@ -78,7 +78,7 @@ h0 = df0 |> filter(file_code == filecode2analyze) |>
 
 figure = ggarrange(h0)
 figure
-ggsave(filename = paste0("data-output/qq_", cg2analyze0, "_", filecode2analyze, ".png"))
+ggsave(filename = paste0("plots/qq_", cg2analyze0, "_", filecode2analyze, ".png"))
 
 h00 = df00 |> filter(file_code == filecode2analyze) |>
   ggplot(mapping = aes(sample = cer)) + 
@@ -89,7 +89,7 @@ h00 = df00 |> filter(file_code == filecode2analyze) |>
 
 figure = ggarrange(h00)
 figure
-ggsave(filename = paste0("data-output/qq_", cg2analyze00, "_", filecode2analyze, ".png"))
+ggsave(filename = paste0("plots/qq_", cg2analyze00, "_", filecode2analyze, ".png"))
 
 h1 = df1 |> filter(file_code == filecode2analyze) |>
   ggplot(mapping = aes(sample = cer)) + 
@@ -100,4 +100,4 @@ h1 = df1 |> filter(file_code == filecode2analyze) |>
 
 figure = ggarrange(h1)
 figure
-ggsave(filename = paste0("data-output/qq_ppd", "_", filecode2analyze, ".png"))
+ggsave(filename = paste0("plots/qq_ppd", "_", filecode2analyze, ".png"))
