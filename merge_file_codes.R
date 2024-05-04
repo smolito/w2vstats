@@ -4,7 +4,7 @@ library(writexl)
 
 source("directory_work.R")
 
-# script designed to clean data from wav2vec output across whole, uncut .wav files
+# script to clean data from wav2vec output across whole, uncut .wav files
 
 # setup output file name
 output_name = "28ppd_clean"
