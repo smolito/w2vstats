@@ -13,6 +13,10 @@ df1 = read.csv("data-output/mean_cer_across_names_28 People with Parkinson's dis
   as_tibble() |>
   select(-c(X))
 
+shapiro.test(df0$prumer)
+shapiro.test(df00$prumer)
+shapiro.test(df1$prumer)
+
 data2test = bind_rows(df0, df00, df1)
 
 kruskal.test(prumer ~ group, data = data2test)
@@ -31,6 +35,10 @@ df1 = read.csv("data-output/mean_cer_by_word_in_group_28 People with Parkinson's
   as_tibble() |>
   select(-c(X))
 
+shapiro.test(df0$prumer)
+shapiro.test(df00$prumer)
+shapiro.test(df1$prumer)
+
 # variance yhc vs ppd
 var.test(df0$prumer, df1$prumer)
 
@@ -40,7 +48,7 @@ var.test(df00$prumer, df1$prumer)
 # t-test yhc vs ppd
 t.test(df0$prumer, df1$prumer, var.equal = TRUE)
 
-# t-test yhc vs ehc
+# t-test ehc vs ppd 
 t.test(df00$prumer, df1$prumer, var.equal = TRUE)
 
 # anova 
