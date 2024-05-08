@@ -4,6 +4,8 @@ library(powerjoin)
 
 source("directory_work.R")
 
+# deprecated script, use only "pr_split_raw2mean.R"
+
 df = read.csv("data-input/pr_split2804.csv")
 
 # adjusting word ids for skipped words in: Saverio S, Nicolo C and Giustina M

@@ -6,7 +6,8 @@ library(readxl)
 source("directory_work.R")
 
 df = read_xlsx("data-input/pr_splitwprsn_id.xlsx") |> select(-c(Column1)) |>
-  mutate(cer = as.numeric(cer))
+  mutate(cer = as.numeric(cer)) |>
+  mutate(word_id = word_id + 1)
 
 grps = df |> select(group) |> distinct() |> unlist()
 words = df |> select(word) |> distinct() |> unlist()
