@@ -1,10 +1,12 @@
 library(tidyverse)
 library(purrr)
 library(writexl)
+library(readxl)
 
 source("directory_work.R")
 
-df = read.csv("data-input/pr_split2804_clean.csv") |> select(-c(X))
+df = read_xlsx("data-input/pr_splitwprsn_id.xlsx") |> select(-c(Column1)) |>
+  mutate(cer = as.numeric(cer))
 
 grps = df |> select(group) |> distinct() |> unlist()
 words = df |> select(word) |> distinct() |> unlist()
@@ -12,49 +14,20 @@ words = df |> select(word) |> distinct() |> unlist()
 # yhc = df |> filter(group == grps[1])
 # ehc = df |> filter(group == grps[2])
 # ppd = df |> filter(group == grps[3])
-
-# getting mean of dependent measurements ----
-
-mergnute_zaznamy_na_slovo = map(grps, function(skupina){
-  
-  df0 = df |> filter(group == skupina)
-  uniquenms0 = df0 |> select(name) |> distinct() |> unlist()
-  
-  mrgd = map(words, function(slovo){
-    
-    merge_by_code = map(uniquenms0, function(nm){
-      
-      g = df0 |>
-        filter(word == slovo & name == nm) |>
-        mutate(prumer = mean(cer))
-      
-      return(g)
-      
-    }) |> bind_rows()
-    
-    return(merge_by_code)
-  }) |>
-    bind_rows() |>
-    distinct(name, word, word_id, prumer, .keep_all = TRUE) |>
-    select(-c(cer, t, transcript, wer)) |>
-    rename(cer = prumer)
-  
-}, .progress = TRUE)
+# nms = df |> filter(group == grps[3])|> select(name) |> distinct() |> unlist()
 
 # group mean by words ----
-prumer_skupin_po_slovu = map(mergnute_zaznamy_na_slovo, function(skupina){
+prumer_skupin_po_slovu = map(grps, function(skupina){
   
   prumer_skupiny_po_slovu = map(words, function(slovo){
     
-    grp = skupina |> select(group) |> distinct() |> unlist()
-    
     # get df with all ppl in a group, by word
-    dfmean = skupina |>
-      filter(word == slovo & group == grp)
+    dfmean = df |>
+      filter(word == slovo & group == skupina)
     
     cer = dfmean |> select(cer) |> unlist()
     
-    dfmean = dfmean |> select(-c(name, cer)) |>
+    dfmean = dfmean |> select(group, word, word_id) |>
       distinct() |>
       mutate(prumer = mean(cer))
     
@@ -76,23 +49,29 @@ map(prumer_skupin_po_slovu, function(df){
   write_xlsx(df, paste0("data-output/", "mean_cer_by_word_in_group_", nm, ".xlsx"))
 })
 
-# TODO: means across all the words by names ----
+# means across all the words by names (person_id)----
 
-prumer_skupin_po_jmenu = map(mergnute_zaznamy_na_slovo, function(skupina){
+skupiny_list = map(grps, function(x){
+  y = df |> filter(group == x)
   
-  uniquenms = skupina |> select(name) |> distinct() |> unlist()
+  return(y)
+})
+
+prumer_skupin_po_jmenu = map(skupiny_list, function(skupina){
   
-  prumer_skupiny_po_jmenu = map(uniquenms, function(jmeno){
+  uniqueids = skupina |> select(person_id) |> distinct() |> unlist()
+  
+  prumer_skupiny_po_jmenu = map(uniqueids, function(id){
     
     grp = skupina |> select(group) |> distinct() |> unlist()
     
     # get df with all ppl in a group, by name
     dfmean = skupina |>
-      filter(name == jmeno & group == grp)
+      filter(person_id == id & group == grp)
     
     cer = dfmean |> select(cer) |> unlist()
     
-    dfmean = dfmean |> select(-c(word, word_id, cer)) |>
+    dfmean = dfmean |> select(group, person_id, name) |>
       mutate(prumer = mean(cer)) |>
       distinct()
     
