@@ -5,6 +5,8 @@ library(readxl)
 
 source("directory_work.R")
 
+# pr_splitwprsn_id.xlsx => file with person_id data
+
 df = read_xlsx("data-input/pr_splitwprsn_id.xlsx") |> select(-c(Column1)) |>
   mutate(cer = as.numeric(cer)) |>
   mutate(word_id = word_id + 1)

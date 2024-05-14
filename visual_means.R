@@ -5,26 +5,26 @@ library(purrr)
 source("directory_work.R")
 
 # means/names
-means = "names"
-df0 = read.csv("data-output/mean_cer_across_names_15 Young Healthy Control.csv", header = TRUE) |>
-  as_tibble()
-
-df00 = read.csv("data-output/mean_cer_across_names_22 Elderly Healthy Control.csv", header = TRUE) |>
-  as_tibble()
-
-df1 = read.csv("data-output/mean_cer_across_names_28 People with Parkinson's disease.csv", header = TRUE) |>
-  as_tibble()
+# means = "names"
+# df0 = read.csv("data-output/mean_cer_across_names_15 Young Healthy Control.csv", header = TRUE) |>
+#   as_tibble()
+# 
+# df00 = read.csv("data-output/mean_cer_across_names_22 Elderly Healthy Control.csv", header = TRUE) |>
+#   as_tibble()
+# 
+# df1 = read.csv("data-output/mean_cer_across_names_28 People with Parkinson's disease.csv", header = TRUE) |>
+#   as_tibble()
 
 # means/word
-# means = "word"
-# df0 = read.csv("data-output/mean_cer_by_word_in_group_15 Young Healthy Control.csv", header = TRUE) |>
-#   as_tibble()
-# 
-# df00 = read.csv("data-output/mean_cer_by_word_in_group_22 Elderly Healthy Control.csv", header = TRUE) |>
-#   as_tibble()
-# 
-# df1 = read.csv("data-output/mean_cer_by_word_in_group_28 People with Parkinson's disease.csv", header = TRUE) |>
-#   as_tibble()
+means = "word"
+df0 = read.csv("data-output/mean_cer_by_word_in_group_15 Young Healthy Control.csv", header = TRUE) |>
+  as_tibble()
+
+df00 = read.csv("data-output/mean_cer_by_word_in_group_22 Elderly Healthy Control.csv", header = TRUE) |>
+  as_tibble()
+
+df1 = read.csv("data-output/mean_cer_by_word_in_group_28 People with Parkinson's disease.csv", header = TRUE) |>
+  as_tibble()
 
 cg0 = "15 YHC"
 cg00 = "22 EHC"
@@ -116,7 +116,7 @@ names(group.colors) = grps
 
 bxplt = ggplot(data = prumery, mapping = aes(x = group, y = prumer, fill=group)) +
   geom_boxplot() +
-  labs(y = ttl) + 
+  labs(y = ttl, x = "") + 
   theme(legend.position="none") + 
   scale_fill_manual(values=group.colors)
 
